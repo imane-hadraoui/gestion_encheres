@@ -1,0 +1,79 @@
+.compte-rebours {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    perspective: 400px;
+}
+
+.cr-segment {
+    text-align: center;
+}
+
+.cr-box {
+    position: relative;
+    min-width: 58px;
+    padding: 0.55rem 0.35rem;
+    border-radius: 0.65rem;
+    background: linear-gradient(145deg, #2b2f36, #1c1f24);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.cr-value {
+    display: block;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    transform-origin: top center;
+    animation: cr-flip 0.5s ease;
+}
+
+.cr-label {
+    margin-top: 0.35rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+}
+
+/* Animation « flip » rejouée à chaque changement de valeur */
+@keyframes cr-flip {
+    0% {
+        transform: translateY(-65%) rotateX(90deg);
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0) rotateX(0deg);
+        opacity: 1;
+    }
+}
+
+/* État urgent (moins d'une heure) : boîtes rouges qui pulsent */
+.compte-rebours.urgent .cr-box {
+    background: linear-gradient(145deg, #dc3545, #a71d2a);
+    animation: cr-pulse 1s infinite;
+}
+
+@keyframes cr-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.55);
+    }
+    50% {
+        box-shadow: 0 0 0 7px rgba(220, 53, 69, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cr-value {
+        animation: none;
+    }
+    .compte-rebours.urgent .cr-box {
+        animation: none;
+    }
+}

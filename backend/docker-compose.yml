@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gestion_encheres_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: gestion_encheres
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      # Live-mount the project so local edits (and artisan-generated files) sync instantly
+      - .:/var/www/html
+      # Keep the image-built dependencies/assets instead of the (empty) host folders
+      - vendor:/var/www/html/vendor
+      - node_modules:/var/www/html/node_modules
+      - build:/var/www/html/public/build
+      # Container uses its own env; the local .env stays untouched for non-Docker use
+      - ./.env.docker:/var/www/html/.env
+
+  mysql:
+    image: mysql:8.0
+    container_name: gestion_encheres_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: gestion_encheres
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-psecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
+  vendor:
+  node_modules:
+  build:
