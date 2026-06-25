@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import api, { getCsrfCookie } from "../../api.js";
 import { useAuth } from "../../contexts/authContext.jsx";
 import JButton from "../../components/JButton.jsx";
+import InputField from "../../components/InputField.jsx";
+import TextareaInput from "../../components/TextareaInput.jsx";
+import SelectGroupe from "../../components/SelectGroupe.jsx";
 
 export function ProduitCreate() {
     const { user, loading: authLoading } = useAuth();
@@ -39,7 +42,17 @@ export function ProduitCreate() {
     const handleChange = (e) =>
         setForm({ ...form, [e.target.name]: e.target.value });
 
-    const champ = (name) => `form-control ${erreurs[name] ? "is-invalid" : ""}`;
+    // Laravel renvoie un tableau de messages par champ -> on prend le premier
+    const err = (name) => erreurs[name]?.[0];
+
+    // Options de la liste déroulante des catégories (avec un choix par défaut)
+    const categoryOptions = [
+        { value: "", label: "Choisir..." },
+        ...categories.map((cat) => ({
+            value: cat.id,
+            label: cat.libelle || cat.nom || cat.name,
+        })),
+    ];
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -90,75 +103,43 @@ export function ProduitCreate() {
             )}
 
             <form onSubmit={handleSubmit} noValidate>
-                <div className="mb-3">
-                    <label className="form-label">Libellé</label>
-                    <input
-                        type="text"
-                        name="libelle"
-                        className={champ("libelle")}
-                        value={form.libelle}
-                        onChange={handleChange}
-                    />
-                    {erreurs.libelle && (
-                        <div className="invalid-feedback">{erreurs.libelle[0]}</div>
-                    )}
-                </div>
+                <InputField
+                    label="Libellé"
+                    name="libelle"
+                    value={form.libelle}
+                    onChange={handleChange}
+                    error={err("libelle")}
+                />
 
-                <div className="mb-3">
-                    <label className="form-label">Description</label>
-                    <textarea
-                        name="description"
-                        rows="4"
-                        className={champ("description")}
-                        value={form.description}
-                        onChange={handleChange}
-                    />
-                    {erreurs.description && (
-                        <div className="invalid-feedback">
-                            {erreurs.description[0]}
-                        </div>
-                    )}
-                </div>
+                <TextareaInput
+                    label="Description"
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                    error={err("description")}
+                />
 
                 <div className="row">
-                    <div className="col-md-6 mb-3">
-                        <label className="form-label">Prix de départ (DH)</label>
-                        <input
+                    <div className="col-md-6">
+                        <InputField
+                            label="Prix de départ (DH)"
                             type="number"
-                            step="0.01"
-                            min="0"
                             name="prix_initial"
-                            className={champ("prix_initial")}
                             value={form.prix_initial}
                             onChange={handleChange}
+                            error={err("prix_initial")}
                         />
-                        {erreurs.prix_initial && (
-                            <div className="invalid-feedback">
-                                {erreurs.prix_initial[0]}
-                            </div>
-                        )}
                     </div>
 
                     <div className="col-md-6 mb-3">
-                        <label className="form-label">Catégorie</label>
-                        <select
+                        <SelectGroupe
+                            label="Catégorie"
                             name="category_id"
-                            className={`form-select ${erreurs.category_id ? "is-invalid" : ""}`}
                             value={form.category_id}
                             onChange={handleChange}
-                        >
-                            <option value="">Choisir...</option>
-                            {categories.map((cat) => (
-                                <option key={cat.id} value={cat.id}>
-                                    {cat.libelle || cat.nom || cat.name}
-                                </option>
-                            ))}
-                        </select>
-                        {erreurs.category_id && (
-                            <div className="invalid-feedback">
-                                {erreurs.category_id[0]}
-                            </div>
-                        )}
+                            options={categoryOptions}
+                            error={err("category_id")}
+                        />
                     </div>
                 </div>
 
@@ -167,11 +148,11 @@ export function ProduitCreate() {
                     <input
                         type="file"
                         accept="image/*"
-                        className={`form-control ${erreurs.image ? "is-invalid" : ""}`}
+                        className={`form-control ${err("image") ? "is-invalid" : ""}`}
                         onChange={(e) => setImage(e.target.files[0] || null)}
                     />
-                    {erreurs.image && (
-                        <div className="invalid-feedback">{erreurs.image[0]}</div>
+                    {err("image") && (
+                        <div className="invalid-feedback">{err("image")}</div>
                     )}
                 </div>
 

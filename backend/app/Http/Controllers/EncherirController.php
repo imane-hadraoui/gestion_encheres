@@ -13,7 +13,12 @@ class EncherirController extends Controller
 {
     public function index()
     {
-        return response()->json(Encherir::with(['acheteur', 'produit'])->get(), 200);
+        $user = Auth::user();
+        if ($user->type === 'acheteur') {
+            return response()->json(Encherir::with(['acheteur', 'produit'])->where('user_id',Auth::id())->get(), 200);
+        } else {
+            return response()->json(Encherir::with(['acheteur', 'produit'])->get(), 200);
+        }
     }
 
 

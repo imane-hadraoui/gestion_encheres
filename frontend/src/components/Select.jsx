@@ -1,15 +1,16 @@
-export default function Select({ 
-    className = "", 
-    style = {}, 
-    value, 
-    onChange, 
+export default function Select({
+    className = "",
+    style = {},
+    value,
+    onChange,
     options = [] ,
-    name
+    name,
+    error,
 }) {
     return (
-        <select 
-            className={`form-select ${className}`} 
-            style={{ cursor: 'pointer', ...style }} 
+        <select
+            className={`form-select ${error ? "is-invalid" : ""} ${className}`}
+            style={{ cursor: 'pointer', ...style }}
             value={value}
             onChange={onChange}
             name={name}
