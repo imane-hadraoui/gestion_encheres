@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext.jsx";
 import JButton from "../../components/JButton.jsx";
+import InputField from "../../components/InputField.jsx";
 
 export function Login() {
     const { login } = useAuth();
@@ -48,34 +49,25 @@ export function Login() {
             )}
 
             <form onSubmit={handleSubmit} noValidate>
-                <div className="mb-3">
-                    <label className="form-label">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        className={`form-control ${erreurs.email ? "is-invalid" : ""}`}
-                        value={form.email}
-                        onChange={handleChange}
-                    />
-                    {erreurs.email && (
-                        <div className="invalid-feedback">{erreurs.email[0]}</div>
-                    )}
-                </div>
+             
+                <InputField
+                    type="email"
+                    name="email"
+                    label="Email"
+                    value={form.email}
+                    onChange={handleChange}
+                    error={erreurs.email ? erreurs.email[0] : ""}
+                />
 
-                <div className="mb-4">
-                    <label className="form-label">Mot de passe</label>
-                    <input
-                        type="password"
-                        name="password"
-                        className={`form-control ${erreurs.password ? "is-invalid" : ""}`}
-                        value={form.password}
-                        onChange={handleChange}
-                    />
-                    {erreurs.password && (
-                        <div className="invalid-feedback">{erreurs.password[0]}</div>
-                    )}
-                </div>
-
+                <InputField
+                    type="password"
+                    name="password"
+                    label="Mot de passe"
+                    value={form.password}
+                    onChange={handleChange}
+                    error={erreurs.password ? erreurs.password[0] : ""}
+                />
+                   
                 <JButton
                     type="submit"
                     className="btn btn-success w-100"

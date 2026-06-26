@@ -17,7 +17,10 @@ class EncherirController extends Controller
         if ($user->type === 'acheteur') {
             return response()->json(Encherir::with(['acheteur', 'produit'])->where('user_id',Auth::id())->get(), 200);
         } else {
-            return response()->json(Encherir::with(['acheteur', 'produit'])->get(), 200);
+            return response()->json(Encherir::with(['acheteur', 'produit'])
+            ->whereHas('produit', function ($query) {
+                $query->where('user_id', Auth::id()); 
+                })->get(), 200);
         }
     }
 
