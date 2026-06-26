@@ -62,9 +62,9 @@ export function ProduitIndex() {
 
     }, [page, searchKeyword, categoryId, estVendeur]);
 
-    //  Suppression d'un produit (vendeur). Refusée côté serveur si déjà enchéri.
+    //  Suppression d'un produit (vendeur).
     const handleSupprimer = async (produit) => {
-        // Garde-fou côté client : un produit déjà enchéri ne peut pas être supprimé
+        //  un produit déjà enchéri ne peut pas être supprimé
         if (produit.encheres_max_prix) {
             toast.error("Impossible de supprimer un produit déjà enchéri.");
             return;
@@ -139,7 +139,7 @@ export function ProduitIndex() {
                             </div>
                         )}
              
-                        {/* On passe la liste des produits */}
+                      {/* afficher liste des produits */}
                         {produits.length > 0 ? (
                             <CarteProduit
                                 data={produits}
@@ -152,6 +152,7 @@ export function ProduitIndex() {
                             </div>
                         )}
 
+                        {/* Pagination */}
                         {pagination && produits.length > 0 && (
                             <Pagination 
                                 data={pagination} 

@@ -42,10 +42,8 @@ export function ProduitCreate() {
     const handleChange = (e) =>
         setForm({ ...form, [e.target.name]: e.target.value });
 
-    // Laravel renvoie un tableau de messages par champ -> on prend le premier
     const err = (name) => erreurs[name]?.[0];
 
-    // Options de la liste déroulante des catégories (avec un choix par défaut)
     const categoryOptions = [
         { value: "", label: "Choisir..." },
         ...categories.map((cat) => ({
@@ -70,7 +68,6 @@ export function ProduitCreate() {
         try {
             await getCsrfCookie();
             await api.post("/produits", data, {
-                // Laisse axios définir le bon Content-Type (multipart + boundary)
                 headers: { "Content-Type": undefined },
             });
             navigate("/produits", { replace: true });
