@@ -155,7 +155,7 @@ export function ProduitCreate() {
 
                 <JButton
                     type="submit"
-                    className="btn btn-success w-100"
+                    className="btn btn-success w-100 mb-2"
                     disabled={enCours}
                 >
                     {enCours ? "Enregistrement..." : "Créer le produit"}

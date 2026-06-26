@@ -45,7 +45,7 @@ export function ProduitIndex() {
                 page,
                 search: searchKeyword,
                 category: categoryId || undefined,
-                // Vendeur : on ne récupère que ses propres produits
+                // si l'utilisateur est un Vendeur : on ne récupère que ses propres produits
                 mine: estVendeur ? 1 : undefined,
             },
         })

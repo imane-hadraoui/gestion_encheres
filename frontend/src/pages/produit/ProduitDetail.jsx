@@ -16,7 +16,7 @@ export function ProduitDetail() {
 
   // État de l'action « enchérir »
   const [enchereEnCours, setEnchereEnCours] = useState(false);
-  const [message, setMessage] = useState(null); // { type: 'success'|'danger', texte }
+  const [message, setMessage] = useState(null); 
 
   // Enchère terminée (temps écoulé)
   const [estTermine, setEstTermine] = useState(false);
@@ -43,7 +43,6 @@ export function ProduitDetail() {
 
   useEffect(() => {
     chargerProduit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   // Le vendeur ne peut pas enchérir sur son propre produit
@@ -56,7 +55,7 @@ export function ProduitDetail() {
     : null;
 
   const encherir = async () => {
-    // Non connecté : redirection vers la connexion (retour ici ensuite)
+    // on vérifier d'abord est ce que le user est connecté ou non / sinon rédiger vers la page login
     if (!user) {
       navigate("/login", { state: { from: `/produits/${id}` } });
       return;
