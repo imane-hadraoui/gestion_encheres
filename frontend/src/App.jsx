@@ -18,6 +18,7 @@ function App() {
             <AuthProvider>
                 <Navbar/>
                   <Routes>
+                      <Route path="/" element={<ProduitIndex />} />
                       <Route path={"/produits"} element={<ProduitIndex />} />
                       <Route path={"/produits/nouveau"} element={<ProduitCreate />} />
                       <Route path={"/produits/:id"} element={<ProduitDetail />} />

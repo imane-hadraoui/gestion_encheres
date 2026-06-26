@@ -5,6 +5,7 @@ export default function JButton({
   onClick,
   type = "button",
   className,
+  title="",
   disabled,
 }) {
   return (
@@ -14,6 +15,7 @@ export default function JButton({
         className={className}
         onClick={onClick}
         disabled={disabled}
+        title={title}
       >
         {children}
       </button>
